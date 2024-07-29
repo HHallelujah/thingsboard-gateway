@@ -133,10 +133,13 @@ class TBGatewayService:
 
     def __init__(self, config_file=None):
         self.__init_variables()
+        # 在主线程中捕捉 SIGINT 信号（通常由按下 Ctrl+C 触发）并调用 __stop_gateway 方法来优雅地停止网关服务
         if current_thread() is main_thread():
             signal(SIGINT, lambda _, __: self.__stop_gateway())
 
+        # 初始化一个线程锁 (RLock)
         self.__lock = RLock()
+        # 初始化一个一个处理异步设备操作的线程 (Thread)
         self.__process_async_actions_thread = Thread(target=self.__process_async_device_actions,
                                                      name="Async device actions processing thread", daemon=True)
 
@@ -166,6 +169,7 @@ class TBGatewayService:
         self.__modify_main_config()
 
         log.info("Gateway starting...")
+        # 检查和管理 ThingsBoard IoT Gateway 的版本更新
         self.__updater = TBUpdater()
         self.version = self.__updater.get_version()
         log.info("ThingsBoard IoT gateway version: %s", self.version["current_version"])
