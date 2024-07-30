@@ -8,6 +8,7 @@ class DeviceFilter:
         self._config_path = config_path
         self._config = self._load_config()
 
+    # 从配置文件中加载deny和allow的规则；若没有提供配置路径，则返回默认的空规则
     def _load_config(self):
         if self._config_path:
             with open(self._config_path, 'r') as file:

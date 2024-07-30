@@ -24,6 +24,7 @@ from simplejson import dumps, load
 
 from thingsboard_gateway.tb_utility.tb_utility import TBUtility
 
+#尝试导入 tb_gateway_mqtt 模块中的 TBGatewayMqttClient 和 TBDeviceMqttClient 类。如果导入失败，则安装 tb-mqtt-client 库并再次尝试导入。
 try:
     from tb_gateway_mqtt import TBGatewayMqttClient, TBDeviceMqttClient
 except ImportError:

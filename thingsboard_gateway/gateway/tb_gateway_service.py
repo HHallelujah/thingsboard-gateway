@@ -131,6 +131,7 @@ class TBGatewayService:
         'get_connector_config'
     ]
 
+    # 构造函数，初始化gateway服务，并根据提供的配置文件进行配置
     def __init__(self, config_file=None):
         self.__init_variables()
         # 在主线程中捕捉 SIGINT 信号（通常由按下 Ctrl+C 触发）并调用 __stop_gateway 方法来优雅地停止网关服务
@@ -180,6 +181,7 @@ class TBGatewayService:
             self.tb_client.disconnect()
         except Exception as e:
             log.exception(e)
+        # 注册服务订阅回调函数，以便在客户端连接成功时自动订阅所需主题。
         self.tb_client.register_service_subscription_callback(self.subscribe_to_required_topics)
         self.tb_client.connect()
         if self.stopped:
@@ -220,6 +222,7 @@ class TBGatewayService:
         self.__min_pack_send_delay_ms = self.__min_pack_send_delay_ms / 1000.0
         self.__min_pack_size_to_send = self.__config['thingsboard'].get('minPackSizeToSend', 50)
 
+        # 启动gateway服务
         self._send_thread = Thread(target=self.__read_data_from_storage, daemon=True,
                                    name="Send data to Thingsboard Thread")
         self._send_thread.start()
@@ -260,6 +263,7 @@ class TBGatewayService:
                 self.server = self.manager.get_server()
                 self.server.serve_forever()
 
+        # 停止gateway服务
         while not self.stopped:
             try:
                 sleep(1)

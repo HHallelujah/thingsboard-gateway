@@ -5,7 +5,7 @@ import subprocess
 import sys
 from time import time, sleep
 
-
+# 用于监控文件系统中的更改，并在检测到更改时重新执行指定的函数。
 class HotReloader:
     def __init__(self, function):
         self._stopped = False

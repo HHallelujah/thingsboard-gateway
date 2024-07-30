@@ -6,7 +6,7 @@ from platform import system as platform_system
 
 import simplejson
 
-
+# 守护线程，用于收集和发送网关的统计数据
 class StatisticsService(Thread):
     DATA_STREAMS_STATISTICS = {
         'receivedBytesFromDevices': 0,
